@@ -1,12 +1,291 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Campo Justo Puebla | Plataforma Agrocomercial Directa</title>
-  </head>
-  <body>
-    <noscript>Necesitas habilitar JavaScript para ejecutar esta aplicación.</noscript>
-    <div id="root"></div>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campo Justo Puebla - Vista Previa Sprint 1</title>
+    <style>
+        :root {
+            --primary-color: #2d6a4f;
+            --primary-dark: #1b4332;
+            --bg-color: #f3f7f2;
+            --card-bg: #ffffff;
+            --text-color: #1f2e1d;
+            --border-color: #cbd5e1;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 440px;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(27, 67, 50, 0.08);
+            border-top: 6px solid var(--primary-color);
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: #e9f5db;
+            color: #386641;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            color: var(--primary-dark);
+            font-size: 24px;
+            margin: 0 0 4px 0;
+        }
+
+        p.subtitle {
+            color: #52796f;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            background: none;
+            border: none;
+            font-weight: 600;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            margin-bottom: -2px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 6px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1.5px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        /* Selector de rol interactivo (Tarea 2) */
+        .role-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 5px;
+        }
+
+        .role-card {
+            border: 1.5px solid #d8e2dc;
+            border-radius: 8px;
+            padding: 10px 5px;
+            text-align: center;
+            cursor: pointer;
+            background-color: #f8faf9;
+            transition: all 0.2s;
+        }
+
+        .role-card:hover {
+            border-color: #52b788;
+            background-color: #eef7f2;
+        }
+
+        .role-card.selected {
+            border-color: var(--primary-color);
+            background-color: #d8f3dc;
+            color: var(--primary-dark);
+            font-weight: bold;
+        }
+
+        .role-icon {
+            font-size: 20px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .role-name {
+            font-size: 12px;
+        }
+
+        button.btn-submit {
+            width: 100%;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background 0.2s;
+        }
+
+        button.btn-submit:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .alert {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #eef7f2;
+            border-left: 4px solid var(--primary-color);
+            font-size: 13px;
+            color: var(--primary-dark);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <span class="badge">Sprint 1 • CJ-01 (Tareas 1 y 2)</span>
+        <h1>Campo Justo Puebla</h1>
+        <p class="subtitle">Plataforma web agrocomercial directa</p>
+
+        <!-- Pestañas para cambiar entre Iniciar Sesión y Registro -->
+        <div class="tabs">
+            <button class="tab active" id="tab-login" onclick="cambiarPestana('login')">Iniciar Sesión</button>
+            <button class="tab" id="tab-registro" onclick="cambiarPestana('registro')">Crear Cuenta</button>
+        </div>
+
+        <!-- Formulario -->
+        <form id="mainForm" onsubmit="manejarSubmit(event)">
+            
+            <div class="form-group hidden" id="group-nombre">
+                <label>Nombre Completo</label>
+                <input type="text" id="nombre" placeholder="Ej. Juan Pérez">
+            </div>
+
+            <div class="form-group">
+                <label>Correo Electrónico</label>
+                <input type="email" id="correo" placeholder="ejemplo@campojusto.mx" required>
+            </div>
+
+            <div class="form-group">
+                <label>Contraseña</label>
+                <input type="password" id="password" placeholder="********" required>
+            </div>
+
+            <!-- Selector de Rol (Tarea 2) -->
+            <div class="form-group">
+                <label>Selecciona tu Rol:</label>
+                <div class="role-grid">
+                    <div class="role-card selected" onclick="seleccionarRol('Campesino', this)">
+                        <span class="role-icon">🌾</span>
+                        <span class="role-name">Campesino</span>
+                    </div>
+                    <div class="role-card" onclick="seleccionarRol('Locatario', this)">
+                        <span class="role-icon">🏪</span>
+                        <span class="role-name">Locatario</span>
+                    </div>
+                    <div class="role-card" onclick="seleccionarRol('Transportista', this)">
+                        <span class="role-icon">🚚</span>
+                        <span class="role-name">Transportista</span>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit" id="btn-action">Iniciar Sesión</button>
+        </form>
+
+        <div id="resultado" class="alert hidden"></div>
+    </div>
+
+    <script>
+        let modoActual = 'login';
+        let rolSeleccionado = 'Campesino';
+
+        function cambiarPestana(modo) {
+            modoActual = modo;
+            const tabLogin = document.getElementById('tab-login');
+            const tabRegistro = document.getElementById('tab-registro');
+            const groupNombre = document.getElementById('group-nombre');
+            const btnAction = document.getElementById('btn-action');
+            const resultado = document.getElementById('resultado');
+
+            resultado.classList.add('hidden');
+
+            if (modo === 'login') {
+                tabLogin.classList.add('active');
+                tabRegistro.classList.remove('active');
+                groupNombre.classList.add('hidden');
+                btnAction.innerText = 'Iniciar Sesión';
+            } else {
+                tabRegistro.classList.add('active');
+                tabLogin.classList.remove('active');
+                groupNombre.classList.remove('hidden');
+                btnAction.innerText = 'Registrarse';
+            }
+        }
+
+        function seleccionarRol(rol, elementoCard) {
+            rolSeleccionado = rol;
+            // Quitar clase selected a todas las tarjetas y ponérsela a la clickeada
+            document.querySelectorAll('.role-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            elementoCard.classList.add('selected');
+        }
+
+        function manejarSubmit(event) {
+            event.preventDefault();
+            const correo = document.getElementById('correo').value;
+            const resultadoDiv = document.getElementById('resultado');
+
+            resultadoDiv.classList.remove('hidden');
+            if (modoActual === 'login') {
+                resultadoDiv.innerHTML = `<strong>Acceso simulado:</strong> Sesión iniciada con correo <em>${correo}</em> bajo el rol de <strong>${rolSeleccionado}</strong>.`;
+            } else {
+                const nombre = document.getElementById('nombre').value;
+                resultadoDiv.innerHTML = `<strong>Registro simulado:</strong> Cuenta creada para <em>${nombre || 'Usuario'}</em> con rol de <strong>${rolSeleccionado}</strong>.`;
+            }
+        }
+    </script>
+</body>
 </html>
